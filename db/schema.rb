@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_17_142246) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_17_143756) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -49,6 +49,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_17_142246) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "categories", force: :cascade do |t|
+    t.string "category_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "customers", force: :cascade do |t|
+    t.string "customer_name"
+    t.integer "customer_phone"
+    t.string "customer_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string "slug", null: false
     t.integer "sluggable_id", null: false
@@ -58,6 +72,45 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_17_142246) do
     t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer "payment_id", null: false
+    t.integer "customer_id", null: false
+    t.integer "supplier_id", null: false
+    t.date "date"
+    t.integer "product_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_orders_on_customer_id"
+    t.index ["payment_id"], name: "index_orders_on_payment_id"
+    t.index ["product_id"], name: "index_orders_on_product_id"
+    t.index ["supplier_id"], name: "index_orders_on_supplier_id"
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.string "payment_method"
+    t.float "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.integer "category_id", null: false
+    t.string "product_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_products_on_category_id"
+  end
+
+  create_table "suppliers", force: :cascade do |t|
+    t.integer "product_id", null: false
+    t.string "supplier_name"
+    t.integer "supplier_phone"
+    t.string "supplier_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_suppliers_on_product_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -77,4 +130,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_17_142246) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "orders", "customers"
+  add_foreign_key "orders", "payments"
+  add_foreign_key "orders", "products"
+  add_foreign_key "orders", "suppliers"
+  add_foreign_key "products", "categories"
+  add_foreign_key "suppliers", "products"
 end

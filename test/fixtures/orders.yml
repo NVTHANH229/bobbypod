@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  payment: one
+  customer: one
+  supplier: one
+  date: 2023-04-17
+  product: one
+
+two:
+  payment: two
+  customer: two
+  supplier: two
+  date: 2023-04-17
+  product: two
