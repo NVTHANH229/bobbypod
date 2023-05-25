@@ -19,5 +19,6 @@ module Bobby
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    config.hosts << "bobbypod-production.up.railway.app"
   end
 end
